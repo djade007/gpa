@@ -3,7 +3,6 @@
 * Author Olajide Afeez <https://schoolnetwork.io/@djade>
 */
 
-
 /*
 C is a very, very small
 language and it can do
@@ -24,48 +23,81 @@ to the terminal.
 */
 #include <stdio.h>
 
-int courses_count = 0;
+#define SIZE 60 // max number of courses
 
-int units[];
-int grades[];
+// prototype functions
+int askNumberOfCourses();
+
+double askForScores(int course_count);
+
+double calculateGp(int courses_count, int scores[], int grades[]);
+
+void flush(void);
+
 
 int main()
 {
     // intro
     puts("I can help you calculate your GPA");
 
-    askNumberOfCourses();
+    int number_of_courses;
 
-    if(courses_count < 1) { // if number entered is 0 or a non integer number was entered
-        // stop the program
-        puts("You need to enter a digit greater than one");
-        puts("Please run the program again");
-        return close();
-    }
+    number_of_courses = askNumberOfCourses();
 
-    askForScores();
+    double gp = askForScores(number_of_courses);
 
-    calculateGp();
+    printf("\nYour GPA is %.2f\n\n", gp); // display the gp in 2 dp
 
     // all done
-    close();
+    return close();
 }
 
-int askNumberOfCourses() {
-    printf("\nNumber of courses? ");
-    scanf("%d", &courses_count); // ask
+int askNumberOfCourses(int courses_number) {
+
+    int valid = 0;
+
+    while(valid == 0) {
+        int number = 0; // to hold the number entered
+        printf("\nNumber of courses? "); // ask
+
+
+        scanf("%d", &number); // collect
+        flush();
+
+        if(number > SIZE) {
+            // Can't calculate more than the const size
+            printf("You can't calculate for more than %d courses\n", SIZE);
+
+         } else if (number > 0) {
+            valid = 1;
+            return number;
+        } else {
+            // continue asking for a valid number
+            puts("You need to enter a digit greater than one");
+        }
+    }
+
     return 0;
 }
 
-int askForScores() {
+double askForScores(int courses_count) {
     // initialize the counter
     int i = 0;
 
+    // variables to store units and grades for each course
+    int units[SIZE] = {0};
+    int grades[SIZE] = {0};
+
     // ask the grades for the number of courses given
     for(i; i<courses_count; i++) {
+        int k = i + 1;
         int unit;
-        printf("\n\nUnit for course %d: ", i+1); // ask
-        scanf("%d", &unit); // save and put in units variable
+
+        printf("\n\nUnit for course %d: ", k); // ask
+
+        scanf("%d", &unit); // save and put in unit variable
+        flush();
+
         units[i] = unit; // store in units array
 
         int valid_grade = 0; // variable to know if the user entered a valid grade
@@ -76,8 +108,10 @@ int askForScores() {
 
             valid_grade = 1; // set as valid. To be changed to 0 if the grade entered is not A-F
 
-            printf("\nGrade for course %d: ", i+1); // ask
-            scanf(" %c", &grade); // insert
+            printf("\nGrade for course %d: ", k); // ask
+
+            scanf("%c", &grade); // insert
+            flush();
 
             grade = toupper(grade); // convert the grade entered to upper case
 
@@ -114,31 +148,36 @@ int askForScores() {
             }
 
             // store grade for the particular course in grades array
-            grades[i] = score; // using not using & will not store it in the global grades declared at the top
+            grades[i] = score;
         }
     }
+
+    return calculateGp(courses_count, grades, units);
 }
 
-int calculateGp() {
+double calculateGp(int courses_count, int grades[], int units[]) {
 
     double score = 0;
-    // initialize the counter
 
+    // initialize the counter
     int i = 0;
+
     int total_units = 0;
 
     // loop through to add the units and scores
-    for(i; i<courses_count; i++) {
+    for(i = 0; i<courses_count; i++) {
         // scores
-        score = score + (units[i] * grades[i]);
+        score = score + (grades[i] * units[i]);
         total_units = total_units + units[i];
     }
 
     double gp = score / total_units;
 
-    printf("\nYour GPA is %.2f\n\n", gp); // display the gp in 2 dp
+    return gp;
+}
 
-    return 0;
+void flush(void) {
+    while(getchar() != '\n');
 }
 
 int close() {
