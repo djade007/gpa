@@ -22,6 +22,7 @@ and write data from and
 to the terminal.
 */
 #include <stdio.h>
+#include <ctype.h>
 
 #define SIZE 60 // max number of courses
 
@@ -33,7 +34,7 @@ double askForScores(int course_count);
 double calculateGp(int courses_count, int scores[], int grades[]);
 
 void flush(void);
-
+int close();
 
 int main()
 {
@@ -52,7 +53,7 @@ int main()
     return close();
 }
 
-int askNumberOfCourses(int courses_number) {
+int askNumberOfCourses() {
 
     int valid = 0;
 
@@ -89,7 +90,7 @@ double askForScores(int courses_count) {
     int grades[SIZE] = {0};
 
     // ask the grades for the number of courses given
-    for(i; i<courses_count; i++) {
+    for(i = 0; i<courses_count; i++) {
         int k = i + 1;
         int unit;
 
@@ -183,6 +184,6 @@ void flush(void) {
 int close() {
     puts("type 'exit' to close\n");
     int a;
-    scanf("%g", &a); // to keep the console open
+    scanf("%d", &a); // to keep the console open
     return 0;
 }
