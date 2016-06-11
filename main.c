@@ -24,8 +24,6 @@ to the terminal.
 #include <stdio.h>
 #include <ctype.h>
 
-#define SIZE 60 // max number of courses
-
 // prototype functions
 int askNumberOfCourses();
 
@@ -38,6 +36,7 @@ int close();
 
 int main()
 {
+    puts("Hi man");
     // intro
     puts("I can help you calculate your GPA");
 
@@ -65,11 +64,7 @@ int askNumberOfCourses() {
         scanf("%d", &number); // collect
         flush();
 
-        if(number > SIZE) {
-            // Can't calculate more than the const size
-            printf("You can't calculate for more than %d courses\n", SIZE);
-
-         } else if (number > 0) {
+        if (number > 0) {
             valid = 1;
             return number;
         } else {
@@ -82,12 +77,14 @@ int askNumberOfCourses() {
 }
 
 double askForScores(int courses_count) {
-    // initialize the counter
-    int i = 0;
+
 
     // variables to store units and grades for each course
-    int units[SIZE] = {0};
-    int grades[SIZE] = {0};
+    int units[courses_count];
+    int grades[courses_count];
+
+    // initialize the counter
+    int i;
 
     // ask the grades for the number of courses given
     for(i = 0; i<courses_count; i++) {
