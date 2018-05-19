@@ -1,6 +1,6 @@
 /*
 * Program to calculate GPA
-* Author Olajide Afeez <https://schoolnetwork.io/@djade>
+* Author Olajide Afeez <https://scoolnetwork.com/@djade>
 */
 
 /*
